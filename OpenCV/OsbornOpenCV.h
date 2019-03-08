@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+
 @interface OsbornOpenCV : NSObject
 
 + (UIImage *)autoContrast:(UIImage *)image;
@@ -33,5 +34,7 @@
 + (UIImage *)changeStyle:(UIImage *)image;
 
 
+//清晰度判断
++ (BOOL) whetherTheImageBlurry:(UIImage*)image;
 
 @end

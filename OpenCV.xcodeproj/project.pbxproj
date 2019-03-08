@@ -33,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4466C6FC22312A0400D1F49A /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		4466C6FD22312AEA00D1F49A /* OsbornOpenCV+OsbornOpenCVEX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OsbornOpenCV+OsbornOpenCVEX.h"; sourceTree = "<group>"; };
 		44A5AF1A214BA92B006213E3 /* OpenCV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenCV.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		44A5AF1D214BA92B006213E3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		44A5AF1E214BA92B006213E3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -111,6 +113,8 @@
 				44A5AF2C214BA92B006213E3 /* main.m */,
 				44A5AF4A214BAB94006213E3 /* OsbornOpenCV.h */,
 				44A5AF4B214BAB94006213E3 /* OsbornOpenCV.mm */,
+				4466C6FC22312A0400D1F49A /* PrefixHeader.pch */,
+				4466C6FD22312AEA00D1F49A /* OsbornOpenCV+OsbornOpenCVEX.h */,
 			);
 			path = OpenCV;
 			sourceTree = "<group>";
@@ -402,6 +406,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/OpenCV",
 				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/OpenCV/PrefixHeader.pch";
 				INFOPLIST_FILE = OpenCV/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -425,6 +430,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/OpenCV",
 				);
+				GCC_PREFIX_HEADER = "$(SRCROOT)/OpenCV/PrefixHeader.pch";
 				INFOPLIST_FILE = OpenCV/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (

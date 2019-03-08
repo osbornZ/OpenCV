@@ -48,8 +48,12 @@ typedef NS_ENUM(NSInteger,ProcessType) {
     UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(longPressCompare:)];
     self.imageView.userInteractionEnabled = YES;
     [self.imageView addGestureRecognizer:longPressGesture];
-    
 }
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
 
 - (IBAction)actionSheet:(id)sender {
     [self configActionSheet];
@@ -109,6 +113,10 @@ typedef NS_ENUM(NSInteger,ProcessType) {
             break;
     }
     [self.imageView setImage: self.effectImage];
+    
+    BOOL isBlurry = [OsbornOpenCV whetherTheImageBlurry:self.effectImage];
+    NSLog(@"这张照片是否清晰？%d\n",isBlurry);
+
     
 }
 
