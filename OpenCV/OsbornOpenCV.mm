@@ -28,6 +28,26 @@ using namespace cv;
     Mat grayMat;
     cvtColor(mat, grayMat, CV_BGR2GRAY);
     
+    double HistRed[256]   = {0};
+    double HistGreen[256] = {0};
+    double HistBlue[256]  = {0};
+
+    double dlowcut = 0.1;
+    double dhighcut = 0.1;
+    for (int i=0;i<grayMat.rows;i++)
+    {
+        for (int j=0;j<grayMat.cols;j++)
+        {
+            int iblue =grayMat.at<uchar>(i,j);
+//            int igreen=grayMat.at<uchar>(i,j)[1];
+//            int ired  =grayMat.at<uchar>(i,j)[2];
+            
+            HistBlue[iblue]++;
+//            HistGreen[igreen]++;
+//            HistRed[ired]++;
+        }
+    }
+    
     UIImage *result = MatToUIImage(grayMat);
     return result;
 }
@@ -86,7 +106,6 @@ using namespace cv;
     
 }
 
-
 //低通滤波
 + (UIImage *)lowpassImage:(UIImage *)image {
     Mat src;
@@ -100,7 +119,6 @@ using namespace cv;
     return result;
 }
 
-
 //中值滤波 (非线性滤波 有效去除椒盐噪点)
 + (UIImage *)medianfilter:(UIImage *)image {
     Mat src;
@@ -112,6 +130,32 @@ using namespace cv;
     UIImage *result = MatToUIImage(dst);
     return result;
 }
+
++ (UIImage *)doubleSlider:(UIImage *)image {
+    Mat src;
+    UIImageToMat(image, src);
+    
+    Mat dst;
+    bilateralFilter(src, dst, 15, 150, 3);
+    
+    UIImage *result = MatToUIImage(dst);
+    return result;
+}
+
++ (UIImage *)blendWith:(UIImage *)image another:(UIImage *)image2 {
+    Mat src1,src2, dst;
+    UIImageToMat(image, src1);
+    UIImageToMat(image2, src2);
+    if (src1.data && src2.data ) {
+        double alpha = 0.5;    //权值，系数
+        addWeighted(src1, alpha, src2, (1.0 - alpha), 0.0, dst);
+        
+        UIImage *result = MatToUIImage(dst);
+        return result;
+    }
+    return nil;
+}
+
 
 + (UIImage *)changeColor:(UIImage *)image {
     Mat src;
@@ -139,6 +183,18 @@ using namespace cv;
     UIImage *result = MatToUIImage(dst1);
     return result;
 
+}
+
++ (UIImage *)equalHist:(UIImage *)image {
+
+    Mat src, dst;
+    UIImageToMat(image, src);
+    
+    cvtColor( src, src, COLOR_BGR2GRAY );
+    equalizeHist( src, dst );
+    
+    UIImage *result = MatToUIImage(dst);
+    return result;
 }
 
 
@@ -233,12 +289,12 @@ void BrightnessAndContrastAuto(const cv::Mat &src, cv::Mat &dst, float clipHistP
 Mat autocontrost(Mat matface)
 {
     //进行自动对比度校正
-    double HistRed[256]={0};
+    double HistRed[256]  ={0};
     double HistGreen[256]={0};
-    double HistBlue[256]={0};
-    int bluemap[256]={0};
-    int redmap[256]={0};
-    int greenmap[256]={0};
+    double HistBlue[256] ={0};
+    int bluemap[256]     ={0};
+    int redmap[256]      ={0};
+    int greenmap[256]    ={0};
     
     double dlowcut = 0.1;
     double dhighcut = 0.1;
@@ -442,9 +498,9 @@ Mat autocontrost(Mat matface)
 Mat myAutocontrost(Mat matface)
 {
     //进行自动对比度校正
-    double HistRed[256]={0};
-    double HistGreen[256]={0};
-    double HistBlue[256]={0};
+    double HistRed[256]   = {0};
+    double HistGreen[256] = {0};
+    double HistBlue[256]  = {0};
     
     double dlowcut = 0.1;
     double dhighcut = 0.1;
@@ -460,6 +516,7 @@ Mat myAutocontrost(Mat matface)
             HistRed[ired]++;
         }
     }
+    
     int PixelAmount = matface.rows*matface.cols;
     int isum = 0;
     // blue
@@ -467,7 +524,7 @@ Mat myAutocontrost(Mat matface)
     for (int y = 0;y<256;y++)
     {
         isum= isum+HistBlue[y];
-        if (isum>=PixelAmount*dlowcut*0.01)
+        if (isum>=PixelAmount*dlowcut*0.1)
         {
             iminblue = y;
             break;
@@ -477,7 +534,7 @@ Mat myAutocontrost(Mat matface)
     for (int y=255;y>=0;y--)
     {
         isum=isum+HistBlue[y];
-        if (isum>=PixelAmount*dhighcut*0.01)
+        if (isum>=PixelAmount*dhighcut*0.1)
         {
             imaxblue=y;
             break;
@@ -489,7 +546,7 @@ Mat myAutocontrost(Mat matface)
     for (int y = 0;y<256;y++)//这两个操作我基本能够了解了
     {
         isum= isum+HistRed[y];
-        if (isum>=PixelAmount*dlowcut*0.01)
+        if (isum>=PixelAmount*dlowcut*0.1)
         {
             iminred = y;
             break;
@@ -499,7 +556,7 @@ Mat myAutocontrost(Mat matface)
     for (int y=255;y>=0;y--)
     {
         isum=isum+HistRed[y];
-        if (isum>=PixelAmount*dhighcut*0.01)
+        if (isum>=PixelAmount*dhighcut*0.1)
         {
             imaxred=y;
             break;
@@ -511,7 +568,7 @@ Mat myAutocontrost(Mat matface)
     for (int y = 0;y<256;y++)//这两个操作我基本能够了解了
     {
         isum= isum+HistGreen[y];
-        if (isum>=PixelAmount*dlowcut*0.01)
+        if (isum>=PixelAmount*dlowcut*0.1)
         {
             imingreen = y;
             break;
@@ -521,7 +578,7 @@ Mat myAutocontrost(Mat matface)
     for (int y=255;y>=0;y--)
     {
         isum=isum+HistGreen[y];
-        if (isum>=PixelAmount*dhighcut*0.01)
+        if (isum>=PixelAmount*dhighcut*0.1)
         {
             imaxgreen=y;
             break;
@@ -591,7 +648,6 @@ Mat myAutocontrost(Mat matface)
 }
 
 
-
 #pragma mark --Extension
 
 + (cv::Mat)cvMatFromUIImage:(UIImage *)image {
@@ -652,7 +708,6 @@ Mat myAutocontrost(Mat matface)
     return finalImage;
 }
 
-
 + (BOOL) whetherTheImageBlurry:(UIImage*)image{
     
     unsigned char *data;
@@ -694,7 +749,6 @@ Mat myAutocontrost(Mat matface)
     
     return (Idelta > delta) ? YES : NO;
 }
-
 
 
 @end

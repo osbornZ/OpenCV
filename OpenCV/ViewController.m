@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger,ProcessType) {
     ProcessType_Mask,
     ProcessType_Style,
     ProcessType_Color,
+    ProcessType_Hist,
 };
 
 
@@ -77,12 +78,16 @@ typedef NS_ENUM(NSInteger,ProcessType) {
     UIAlertAction *colorAction = [UIAlertAction actionWithTitle:@"Color" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self actionOpenCVProcess:ProcessType_Color];
     }];
+    UIAlertAction *histAction = [UIAlertAction actionWithTitle:@"Hist" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self actionOpenCVProcess:ProcessType_Hist];
+    }];
 
     [alertVC addAction:grayAction];
     [alertVC addAction:blurAction];
     [alertVC addAction:maskAction];
     [alertVC addAction:styleAction];
     [alertVC addAction:colorAction];
+    [alertVC addAction:histAction];
     [alertVC addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
 
     [self presentViewController:alertVC animated:YES completion:^{
@@ -92,13 +97,14 @@ typedef NS_ENUM(NSInteger,ProcessType) {
 
 - (void)actionOpenCVProcess:(ProcessType)processType {
     UIImage *image  = self.originalImage;
-
+    UIImage *image2 = [UIImage imageNamed:@"ycl2.jpg"];
     switch (processType) {
         case ProcessType_Gray:
-            self.effectImage  = [OsbornOpenCV gray:image];
+//            self.effectImage  = [OsbornOpenCV gray:image]; //
+            self.effectImage  = [OsbornOpenCV blendWith:image another:image2]; //
             break;
         case ProcessType_Blur:
-            self.effectImage  = [OsbornOpenCV lowpassImage:image];
+            self.effectImage  = [OsbornOpenCV doubleSlider:image];
             break;
         case ProcessType_Mask:
             self.effectImage  = [OsbornOpenCV maskImage:image];
@@ -108,6 +114,9 @@ typedef NS_ENUM(NSInteger,ProcessType) {
             break;
         case ProcessType_Color:
             self.effectImage  = [OsbornOpenCV changeColor:image];
+            break;
+        case ProcessType_Hist:
+            self.effectImage  = [OsbornOpenCV equalHist:image];
             break;
         default:
             break;
@@ -121,7 +130,6 @@ typedef NS_ENUM(NSInteger,ProcessType) {
 }
 
 
-
 #pragma mark -- UIGestureRecognizer
 
 - (void)longPressCompare:(UILongPressGestureRecognizer *)gesture {
@@ -132,9 +140,6 @@ typedef NS_ENUM(NSInteger,ProcessType) {
         [self.imageView setImage: image];
     }
 }
-
-
-
 
 
 @end

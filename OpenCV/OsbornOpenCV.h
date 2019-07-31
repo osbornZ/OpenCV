@@ -27,14 +27,22 @@
 //中值滤波
 + (UIImage *)medianfilter:(UIImage *)image;
 
+//双边滤波
++ (UIImage *)doubleSlider:(UIImage *)image;
+
 //颜色变换
 + (UIImage *)changeColor:(UIImage *)image;
 
 //风格变换
 + (UIImage *)changeStyle:(UIImage *)image;
 
-
 //清晰度判断
 + (BOOL) whetherTheImageBlurry:(UIImage*)image;
 
++ (UIImage *)equalHist:(UIImage *)image;
+
++ (UIImage *)blendWith:(UIImage *)image another:(UIImage *)image2;
+
+
 @end
+
